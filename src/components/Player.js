@@ -51,7 +51,7 @@ const Player = ({
 					onChange={dragHandler}
 					type="range"
 				/>
-				<p>{getTime(songInfo.duration)}</p>
+				<p>{getTime(songInfo.duration || 0)}</p>
 			</div>
 			<div className="play-control">
 				<FontAwesomeIcon
