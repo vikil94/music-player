@@ -1,36 +1,30 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faPlay,
 	faAngleLeft,
-    faAngleRight,
-    faPause,
+	faAngleRight,
+	faPause,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
-	//Ref
-	const audioRef = useRef(null);
+const Player = ({ currentSong, isPlaying, setIsPlaying, audioRef, setSongInfo, songInfo }) => {
 	// Event Handlers
 	const playSongHandler = () => {
 		if (isPlaying) {
 			audioRef.current.pause();
-            setIsPlaying(!isPlaying);
+			setIsPlaying(!isPlaying);
 		} else {
 			audioRef.current.play();
 			setIsPlaying(!isPlaying);
 		}
-    };
-    
-	const timeUpdateHandler = (e) => {
-		const current = e.target.currentTime;
-		const duration = e.target.duration;
-		setSongInfo({ ...songInfo, currentTime: current, duration });
-    };
-    
-    const dragHandler = (e) => {
-        audioRef.current.currentTime = e.target.value;
-        setSongInfo({...songInfo, currentTime: e.target.value})
-    }
+	};
+
+	
+
+	const dragHandler = (e) => {
+		audioRef.current.currentTime = e.target.value;
+		setSongInfo({ ...songInfo, currentTime: e.target.value });
+	};
 
 	const getTime = (time) => {
 		return (
@@ -40,10 +34,7 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
 		);
 	};
 	// State
-	const [songInfo, setSongInfo] = useState({
-		currentTime: 0,
-		duration: 0,
-	});
+	
 	return (
 		<div className="player">
 			<div className="time-control">
@@ -51,8 +42,8 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
 				<input
 					min={0}
 					max={songInfo.duration}
-                    value={songInfo.currentTime}
-                    onChange={dragHandler}
+					value={songInfo.currentTime}
+					onChange={dragHandler}
 					type="range"
 				/>
 				<p>{getTime(songInfo.duration)}</p>
@@ -67,7 +58,7 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
 					onClick={playSongHandler}
 					className="play"
 					size="2x"
-					icon={isPlaying ? faPause : faPlay }
+					icon={isPlaying ? faPause : faPlay}
 				/>
 				<FontAwesomeIcon
 					className="skip-forward"
@@ -75,12 +66,7 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
 					icon={faAngleRight}
 				/>
 			</div>
-			<audio
-				onLoadedMetadata={timeUpdateHandler}
-				onTimeUpdate={timeUpdateHandler}
-				ref={audioRef}
-				src={currentSong.audio}
-			></audio>
+			
 		</div>
 	);
 };
